@@ -1,32 +1,27 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <sys/types.h>
-#include <sys/stat.h>
+#include <string.h>
 #include <fcntl.h>
 #include <unistd.h>
+#include <sys/stat.h>
 
 int main(void) {
+    const char *fifoPath = "FIFO2";
+    mkfifo(fifoPath, 0666); // Crear el FIFO con permisos de lectura y escritura
+
     int fp;
-    char buffer[256]; // Buffer para almacenar el mensaje
+    char saludo[] = "Un saludo !!!!!\n";
 
-    // Intentar abrir el FIFO creado por el otro programa
-    while (1) {
-        fp = open("FIFO2", O_RDONLY); // Abrir FIFO en modo lectura
-        if (fp == -1) {
-            perror("Error al abrir FIFO");
-            exit(1);
-        }
-
-        // Leer del FIFO
-        printf("Obteniendo información...\n");
-        ssize_t bytesleidos = read(fp, buffer, sizeof(buffer) - 1);
-        if (bytesleidos > 0) {
-            buffer[bytesleidos] = '\0'; // Asegurarse de que el buffer es una cadena
-            printf("%s", buffer);
-        }
-
-        close(fp);
+    // Abrir el FIFO en modo escritura
+    fp = open(fifoPath, O_WRONLY);
+    if (fp == -1) {
+        perror("Error al abrir el FIFO");
+        exit(1);
     }
+
+    printf("Mandando información al FIFO...\n");
+    write(fp, saludo, strlen(saludo)); // Escribir el saludo en el FIFO
+    close(fp);
 
     return 0;
 }

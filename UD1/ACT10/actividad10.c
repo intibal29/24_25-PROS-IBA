@@ -49,7 +49,7 @@ int main () {
             while (1) {
                 pause();  // Esperar la señal del hijo
                 sleep(1);  // Pausa de 1 segundo antes de enviar la respuesta
-                kill(pid_hijo, SIGUSR1);  // Enviar señal SIGUSR1 al hijo
+                kill(pid_hijo, SIGUSR1);  // enviar señal SIGUSR1 al hijo
             }
 
             break;

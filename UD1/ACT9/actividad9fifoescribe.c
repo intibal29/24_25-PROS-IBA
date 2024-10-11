@@ -1,4 +1,3 @@
-actividad9
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -8,7 +7,12 @@ actividad9
 
 int main(void) {
     const char *fifoPath = "FIFO2";
-    mkfifo(fifoPath, 0666); // Crear el FIFO con permisos de lectura y escritura
+
+    // Crear el FIFO con permisos de lectura y escritura
+    if (mkfifo(fifoPath, 0666) == -1) {
+        perror("Error al crear el FIFO (puede que ya exista)");
+        // Puedes decidir salir o continuar, dependiendo de la lógica deseada
+    }
 
     int fp;
     char saludo[] = "Un saludo !!!!!\n";
@@ -21,8 +25,8 @@ int main(void) {
     }
 
     printf("Mandando información al FIFO...\n");
-    write(fp, saludo, strlen(saludo)); // Escribir el saludo en el FIFO
-    close(fp);
+    write(fp, saludo, strlen(saludo));  // Escribir el saludo en el FIFO
+    close(fp);  // Cerrar el FIFO tras la escritura
 
     return 0;
 }

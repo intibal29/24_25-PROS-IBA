@@ -1,5 +1,3 @@
-// Resolución de problemas: se asegura la impresión correcta del mensaje de cada hilo.
-// Se verifica que el hilo ejecute su mensaje de ejecución correctamente en run().
 
 class Hilo extends Thread {
     private String mensaje;

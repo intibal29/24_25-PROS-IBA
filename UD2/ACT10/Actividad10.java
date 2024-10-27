@@ -1,5 +1,3 @@
-// Resolución de problemas: se ha manejado la configuración de prioridades y la ejecución en el orden correcto.
-// Se emplean métodos de la clase Thread para obtener los nombres y prioridades de los hilos.
 
 public class Actividad10 {
     public static void main(String[] args) {
@@ -26,3 +24,4 @@ public class Actividad10 {
         System.out.println("Final programa");
     }
 }
+//

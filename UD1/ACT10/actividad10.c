@@ -1,58 +1,41 @@
-// Archivo: Actividad10.c
+#include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include <stdio.h>
 #include <signal.h>
+#include <sys/wait.h>
 
-/* --------------------------------------------------*/
-/* Gestión de señales en proceso PADRE               */
-void gestion_padre (int signal) {
-    printf("Padre recibe señal...%d\n", signal);
+void manejador(int senal) {
+    printf("Padre recibe señal....%d\n", senal);
 }
 
-/* Gestión de señales en proceso HIJO                */
-void gestion_hijo (int signal) {
-    printf("Hijo recibe señal...%d\n", signal);
-}
+int main() {
+    pid_t pid = fork();
 
-/*****************************************************/
-int main () {
-    int pid_padre, pid_hijo;
-    
-    pid_padre = getpid();  // Obtener el PID del proceso padre
-    pid_hijo = fork();     // Crear el proceso hijo
-    
-    switch (pid_hijo) {
-        case -1: // Error en la creación del proceso hijo
-            printf("No se ha podido crear el proceso hijo...\n");
-            exit(-1);
-            break;
-        
-        case 0:   // Código del hijo
-            signal(SIGUSR1, gestion_hijo);  // Asignar manejador de señal en el hijo
+    if (pid < 0) {
+        perror("Error al crear el proceso hijo");
+        return 1;
+    } else if (pid == 0) {
+        // Proceso hijo
+        pid_t ppid = getppid(); // Obtenemos el PID del padre
 
-            for (int i = 0; i < 3; i++) {
-                sleep(1);  // Pausa de 1 segundo entre señales
-                kill(pid_padre, SIGUSR1);  // Enviar señal SIGUSR1 al padre
-                pause();  // Esperar la señal de respuesta del padre
-            }
+        // Enviamos tres señales SIGUSR1 al padre
+        for (int i = 0; i < 3; i++) {
+            kill(ppid, SIGUSR1);
+            sleep(1); // Espera un segundo entre señales para que se puedan ver en pantalla
+        }
 
-            // Después de enviar 3 señales, terminar al padre con SIGKILL
-            sleep(1);
-            kill(pid_padre, SIGKILL);  // Termina el proceso padre
+        // Enviamos SIGKILL al padre para terminarlo
+        kill(ppid, SIGKILL);
+        exit(0);
+    } else {
+        // Proceso padre
+        // Configuramos el manejador para la señal SIGUSR1
+        signal(SIGUSR1, manejador);
 
-            break;
-        
-        default:  // Código del padre
-            signal(SIGUSR1, gestion_padre);  // Asignar manejador de señal en el padre
-
-            while (1) {
-                pause();  // Esperar la señal del hijo
-                sleep(1);  // Pausa de 1 segundo antes de enviar la respuesta
-                kill(pid_hijo, SIGUSR1);  // enviar señal SIGUSR1 al hijo
-            }
-
-            break;
+        // Esperamos indefinidamente a que el padre reciba señales
+        while (1) {
+            pause(); // El proceso se detiene aquí hasta recibir una señal
+        }
     }
 
     return 0;

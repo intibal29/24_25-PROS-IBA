@@ -38,13 +38,3 @@ int main() {
 }
 
 
-/*
-gcc -o actividad4 actividad4.c
-./actividad4
-*/     
-
-/*Resolución de Problemas
-Errores en fork(): Se maneja con perror().
-Comportamiento Inesperado: Asegúrate de que el padre solo ejecuta el bucle una vez.
-Esperar a Hijos: Usa wait(NULL) para evitar procesos huérfanos.
-*/

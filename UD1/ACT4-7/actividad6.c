@@ -54,11 +54,3 @@ int main() {
 
     return 0;
 }
-/*Resolución de Problemas
-Durante el desarrollo del programa, pueden surgir algunos problemas comunes:
-
-Errores en la creación de procesos: Si fork() devuelve un valor negativo, indica que el sistema no pudo crear un nuevo proceso. Esto puede deberse a la falta de recursos del sistema. Para solucionarlo, asegúrate de que no se estén creando demasiados procesos o verifica la configuración de tu sistema.
-
-Secuencia de ejecución: A veces, los mensajes pueden no aparecer en el orden esperado debido a la naturaleza concurrente de los procesos. Asegúrate de que cada proceso espera correctamente a los hijos usando wait(), de modo que la salida sea predecible.
-
-Faltante #include <sys/wait.h>: Si olvidaste incluir esta biblioteca, el compilador no reconocerá la función wait(), resultando en errores de compilación. Siempre verifica que todas las funciones utilizadas están correctamente incluidas.*/

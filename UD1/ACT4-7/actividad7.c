@@ -3,7 +3,7 @@
 #include <sys/types.h>
 
 int main() {
-    // Definición de la variable inicial
+    //  Definicion de la variable inicial
     int valor = 6;
     
     // Imprimir el valor inicial
